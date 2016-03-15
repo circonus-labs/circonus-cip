@@ -21,6 +21,7 @@ module.exports = function(uuid, secret, options) {
   return function(req, res, next) {
     function recordLatency() {
       if (!req._startAt || !res._startAt) return;
+      if (!req.route || !req.route.path) return;
       var s = (res._startAt[0] - req._startAt[0])
             + (res._startAt[1] - req._startAt[1]) * 1e-9;
       trap.record('express`' + req.route.path + '`latency', s);
