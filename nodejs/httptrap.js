@@ -142,9 +142,11 @@ trap.prototype.push = function() {
 }
 
 trap.prototype.publish = function(interval) {
-  if(!interval) interval = 500;
+  if(interval !== 0 && !interval) interval = 500;
   if(this._pubint) clearInterval(this._pubint);
-  this._pubint = (function(lThis) { setInterval(function() { lThis.push() }, 500); })(this);
+  if(interval != 0) {
+    this._pubint = (function(lThis) { setInterval(function() { lThis.push() }, 500); })(this);
+  }
 }
 
 module.exports = target;
