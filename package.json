@@ -1,0 +1,28 @@
+{
+  "name": "circonus-cip",
+  "version": "1.0.0",
+  "description": "Circonus Instrumentation Package for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:circonus-labs/circonus-cip"
+  },
+  "keywords": [
+    "circonus",
+    "monitoring",
+    "latency"
+  ],
+  "author": "Circonus, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/circonus-labs/circonus-cip/issues"
+  },
+  "homepage": "https://github.com/circonus-labs/circonus-cip",
+  "dependencies": {
+    "on-finished": "^2.3.0",
+    "on-headers": "^1.0.1"
+  }
+}
