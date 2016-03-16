@@ -24,7 +24,7 @@ module.exports = function(uuid, secret, options) {
       if (!req.route || !req.route.path) return;
       var s = (res._startAt[0] - req._startAt[0])
             + (res._startAt[1] - req._startAt[1]) * 1e-9;
-      trap.record('express`' + req.route.path + '`latency', s);
+      trap.record('express`' + req.method + '`' + req.route.path + '`latency', s);
     }
     req._startAt = undefined
     req._startTime = undefined

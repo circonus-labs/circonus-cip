@@ -1,4 +1,5 @@
 module.exports = {
   makeTrap: require('./httptrap'),
-  express: require('./express')
+  express: require('./express'),
+  restify: require('./restify')
 }
