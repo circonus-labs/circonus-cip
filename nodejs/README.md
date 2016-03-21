@@ -12,7 +12,7 @@ It is suggested that you use a different trap for different nodejs apps as well 
         circonus_secret = '<secret>',
         circonus_cip = require('circonus-cip');
 
-    server.on('after', circonus_cip.restify(circonus_uuid, circonus_secret)
+    server.on('after', circonus_cip.restify(circonus_uuid, circonus_secret))
 
 The restify integration tries to simplify metric names so if no versioning of the restify routes exists versioning is left out of the metric name.  Routes without versions will report latencies using metrics names like ``restify`<method>`<routepath>`latency`` and those with versioning will look like ``restify`<method>`<routepath>`<version>`latency``.
 
