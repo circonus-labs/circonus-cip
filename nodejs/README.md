@@ -16,6 +16,23 @@ It is suggested that you use a different trap for different nodejs apps as well 
 
 The restify integration tries to simplify metric names so if no versioning of the restify routes exists versioning is left out of the metric name.  Routes without versions will report latencies using metrics names like ``restify`<method>`<routepath>`latency`` and those with versioning will look like ``restify`<method>`<routepath>`<version>`latency``.
 
+## Hapi Integration
+
+    var circonus_conf = { uuid: '<uuid>', secret: 'secret' };
+    server.register({ register: require('circonus-cip').hapi,
+                      options: circonus_conf,
+                      function(err) {
+                        if(err)
+                          console.log('error', 'Failed loading  circonus-cip')
+                      });
+
+The Hapi integration models the hapi-statsd plugin in naming convention with
+some token inversion to keep overall consistency with circonus-cip plugins.
+The metrics will appear as ``hapi`<method>`<routepath>`latency``.  If the
+API is serving a CORS request, the `<routepath>` will be `{cors*}`. If the
+API encounters a request with no matching route, `<routepath>` will be
+`{notFound*}`.
+
 ## Express Integration
 
     var circonus_uuid = '<uuid>',
