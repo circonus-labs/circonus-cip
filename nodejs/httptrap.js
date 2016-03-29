@@ -10,6 +10,7 @@ trap = function(uuid, secret, options) {
   this.uuid = uuid;
   this.secret = secret;
   this.broker = options.broker || 'trap.noit.circonus.net';
+  this.throwErrors = options.throwErrors;
   this.data = {}
 }
 sys.inherits(trap, events.EventEmitter);
@@ -135,6 +136,10 @@ trap.prototype.push = function() {
         lThis.emit('error', sError);
       }
     });
+  });
+  var throwErrors = this.throwErrors;
+  req.on('error', function(e) {
+    if(throwErrors) throw(e);
   });
   var payload = JSON.stringify(b);
   req.write(payload);
