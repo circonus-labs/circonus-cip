@@ -48,6 +48,7 @@ function collapse(obj) {
 }
 function normalize(vOrig) {
   var v = vOrig, vString = '', exp = 0;
+  if (v == 0) return 'H[0]';
   if (v < 0) {
     vString = '-';
     v = v * -1;
