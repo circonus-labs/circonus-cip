@@ -5,6 +5,8 @@ module.exports.register = function (server, options, next) {
     path = require('path'),
     trap = makeTrap(options.uuid, options.secret, options),
     normalizePath = function(path) { return path };
+  if(options.onError) trap.on('error', options.onError);
+  else trap.on('error', function() {});
   trap.publish();
 
   server.decorate('server', 'httptrap', trap);

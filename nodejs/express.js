@@ -15,7 +15,10 @@ var onHeaders = require('on-headers'),
     makeTrap = require('./httptrap');
 
 module.exports = function(uuid, secret, options) {
+  options = options || {};
   var trap = makeTrap(uuid, secret, options);
+  if(options.onError) trap.on('error', options.onError);
+  else trap.on('error', function() {});
   trap.publish();
 
   return function(req, res, next) {
