@@ -6,7 +6,6 @@ module.exports = function(uuid, secret, options) {
 
   return function(req, res, next) {
     if(req && req.route) {
-      console.log(req.route);
       if(req.timers && req.timers) {
         try {
           var times = req.timers.map(function(a) { return a.time[0] + a.time[1] * 1e-9; });

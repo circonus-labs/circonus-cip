@@ -1,4 +1,4 @@
-var sys=require("sys"),
+var util=require("util"),
     os=require("os"),
     https=require("https"),
     events = require("events"),
@@ -13,7 +13,7 @@ trap = function(uuid, secret, options) {
   this.throwErrors = options.throwErrors;
   this.data = {}
 }
-sys.inherits(trap, events.EventEmitter);
+util.inherits(trap, events.EventEmitter);
 
 function target(uuid, secret, options) {
   var key = uuid + '/' + secret;

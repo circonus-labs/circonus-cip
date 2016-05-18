@@ -1,6 +1,6 @@
 {
   "name": "circonus-cip",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Circonus Instrumentation Package for Node.js",
   "main": "index.js",
   "scripts": {
