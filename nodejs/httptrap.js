@@ -5,11 +5,13 @@ var util=require("util"),
     hostname = os.hostname(),
     trap, traps = {};
 
+var defaultBroker = 'trap.noit.circonus.net';
+
 trap = function(uuid, secret, options) {
   if(!options) options = {};
   this.uuid = uuid;
   this.secret = secret;
-  this.broker = options.broker || 'trap.noit.circonus.net';
+  this.broker = options.broker || defaultBroker;
   this.throwErrors = options.throwErrors;
   this.data = {}
 }
@@ -91,11 +93,15 @@ trap.prototype.push = function() {
   b = collapse(b);
 
   var options = {
-    hostname: 'trap.noit.circonus.net',
+    hostname: this.broker,
     port: 443,
     path: '/module/httptrap/' + this.uuid + '/' + this.secret,
     method: 'PUT',
-    ca:
+  };
+
+  // If using default host, include the self-signed certificate
+  if(options.hostname == defaultBroker) {
+    options.ca = 
 "-----BEGIN CERTIFICATE-----\n" +
 "MIID4zCCA0ygAwIBAgIJAMelf8skwVWPMA0GCSqGSIb3DQEBBQUAMIGoMQswCQYD\n" +
 "VQQGEwJVUzERMA8GA1UECBMITWFyeWxhbmQxETAPBgNVBAcTCENvbHVtYmlhMRcw\n" +
@@ -120,6 +126,7 @@ trap.prototype.push = function() {
 "n2ezaOoRtsQl9dhqEMe8zgL76p9YZ5E69Al0mgiifTteyNjjMuIW\n" +
 "-----END CERTIFICATE-----\n"
   };
+
   var req = https.request(options, function(res) {
     res.setEncoding('utf8');
     var backside = '';
@@ -143,6 +150,8 @@ trap.prototype.push = function() {
     if(throwErrors) throw(e);
   });
   var payload = JSON.stringify(b);
+  // Set Content-Length to avoid using chunked encoding
+  req.setHeader('Content-Length', Buffer.byteLength(payload));
   req.write(payload);
   req.end();
 }
