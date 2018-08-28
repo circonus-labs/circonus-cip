@@ -5,7 +5,7 @@
   "main": "index.js",
   "files": [
     "express.js",
-    "hapi.js",
+    "hapi/legacy.js",
     "httptrap.js",
     "index.js",
     "restify.js"
