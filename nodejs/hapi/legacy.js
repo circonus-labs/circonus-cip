@@ -1,7 +1,7 @@
 // Copyright(c) 2013 Mac Angell
 // Copyright(c) 2016 Circonus, Inc.
 module.exports.register = function (server, options, next) {
-  var makeTrap = require('./httptrap'),
+  var makeTrap = require('../httptrap'),
     path = require('path'),
     trap = makeTrap(options.uuid, options.secret, options),
     normalizePath = function(path) { return path };
@@ -44,5 +44,5 @@ module.exports.register = function (server, options, next) {
 };
 
 module.exports.register.attributes = {
-  pkg: require('./package.json')
+  pkg: require('../package.json')
 };

@@ -3,8 +3,16 @@
   "version": "1.0.5",
   "description": "Circonus Instrumentation Package for Node.js",
   "main": "index.js",
+  "files": [
+    "express.js",
+    "hapi/index.js",
+    "hapi/legacy.js",
+    "httptrap.js",
+    "index.js",
+    "restify.js"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "lab -v -t 100 -l"
   },
   "repository": {
     "type": "git",
@@ -24,5 +32,10 @@
   "dependencies": {
     "on-finished": "^2.3.0",
     "on-headers": "^1.0.1"
+  },
+  "devDependencies": {
+    "lab": "14.x.x",
+    "stand-in": "4.x.x",
+    "uuid": "3.x.x"
   }
 }

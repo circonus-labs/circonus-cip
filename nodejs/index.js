@@ -2,5 +2,5 @@ module.exports = {
   makeTrap: require('./httptrap'),
   express: require('./express'),
   restify: require('./restify'),
-  hapi: require('./hapi')
+  hapi: require('./hapi/legacy')
 }
