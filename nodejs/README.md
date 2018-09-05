@@ -38,7 +38,7 @@ API encounters a request with no matching route, `<routepath>` will be
     var circonus_uuid = '<uuid>',
         circonus_secret = '<secret>',
         circonus_cip = require('circonus-cip');
-        
+
     var app = express();
     app.use(circonus_cip.express(circonus_uuid, circonus_secret));
 
@@ -56,14 +56,14 @@ framework-aware helpers.
         circonus_secret = '<secret>',
         circonus_cip = require('circonus-cip'),
         trap = circonus_cip.makeTrap(circonus_uuid, circonus_secret)
-    
+
     trap.publish()
-    
+
     ...
     trap.record('metric_name', value)
     trap.record('other_metric', other_value)
     ...
-    
+
     trap.publish(0)
 
 For daemonized/long-running processes there is no need to `trap.publish(0)` to disable publication, instead just end the process via normal service control means.
@@ -71,5 +71,34 @@ For daemonized/long-running processes there is no need to `trap.publish(0)` to d
 It is highly recommended that values be in the most simple of units.  For example, if you are recording service latencies, use seconds.  The platform supports arbitrarily small numbers so representing microseconds or nanoseconds as "small" floating point values is both acceptable and desired.
 
 By default, publish will run at cadence of 2Hz (a submission every 500ms).  The publish method takes an optional argument specifying the number of milliseconds between trap events; 0 disables publication.
+
+Disabling publication will cause metrics recorded to queue and could pose memory consumption consequences.  While the data structures used are terse and memory bound per-metric, it is possible to exhaust memory this way by recording a an ever-increasing unique set of metric names. Again, this is only a risk if publication is disabled.
+
+## Agent
+
+Rudimentary framework to send metrics to a local [circonus-agent](https://github.com/circonus-labs/circonus-agent) rather than directly to an HTTPTrap check on a broker.
+
+This is a generalized framework for submitting data to Circonus via the circonus-agent.  It can be used directly by or via ready-to-use
+framework-aware helpers.
+
+    const circonus_cip = require('circonus-cip')
+    const agent = circonus_cip.makeAgent('http://127.0.0.1:2609/write/id');
+
+    agent.publish(0) // disable publishing for example
+
+    ...
+    agent.record('metric_name', value)
+    agent.record('other_metric', other_value)
+    ...
+
+    agent.push() // manually push metrics
+
+The parameter for creating a new agent instance is the full URL for the agent's `/write` endpoint. (e.g. `/write/id` where `id` is the prefix for all metrics submitted to this URL.)
+
+For daemonized/long-running processes there is no need to `agent.publish(0)` to disable publication, instead just end the process via normal service control means.
+
+It is highly recommended that values be in the most simple of units.  For example, if you are recording service latencies, use seconds.  The platform supports arbitrarily small numbers so representing microseconds or nanoseconds as "small" floating point values is both acceptable and desired.
+
+By default, publish will run at cadence of every 10 seconds.  The publish method takes an optional argument specifying the number of milliseconds between publish events; 0 disables publication.
 
 Disabling publication will cause metrics recorded to queue and could pose memory consumption consequences.  While the data structures used are terse and memory bound per-metric, it is possible to exhaust memory this way by recording a an ever-increasing unique set of metric names. Again, this is only a risk if publication is disabled.
