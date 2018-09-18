@@ -81,13 +81,7 @@ class Agent extends EventEmitter {
      */
     constructor(agentURL) {
         super();
-
-        try {
-            this.agentURL = url.parse(agentURL);
-        } catch (err) {
-            throw err;
-        }
-
+        this.agentURL = url.parse(agentURL);
         this.data = {};
         this._publishInterval = null;
     }
