@@ -4,6 +4,7 @@
   "description": "Circonus Instrumentation Package for Node.js",
   "main": "index.js",
   "files": [
+    "agent.js",
     "express.js",
     "hapi/index.js",
     "hapi/legacy.js",
