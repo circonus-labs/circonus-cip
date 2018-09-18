@@ -1,4 +1,5 @@
 'use strict';
+const makeAgent = require('../agent');
 const makeTrap = require('../httptrap');
 const pkg = require('../package.json');
 const startSymbol = Symbol('circonusStartTime');
@@ -6,7 +7,13 @@ function noop() {}
 
 
 function register(server, options) {
-  const trap = makeTrap(options.uuid, options.secret, options);
+  let trap;
+
+  if (options.agentURL) {
+    trap = makeAgent(options.agentURL);
+  } else {
+    trap = makeTrap(options.uuid, options.secret, options);
+  }
 
   if (options.onError) {
     trap.on('error', options.onError);
