@@ -2,9 +2,7 @@
 const https = require('https');
 const EventEmitter = require('events');
 const traps = {};
-const defaultBroker = 'trap.noit.circonus.net';
-let defaultCa;
-
+const defaultBroker = 'api.circonus.com';
 
 class Trap extends EventEmitter {
   constructor(uuid, secret, options) {
@@ -72,11 +70,6 @@ class Trap extends EventEmitter {
       path: '/module/httptrap/' + this.uuid + '/' + this.secret,
       method: 'PUT',
     };
-  
-    // If using default host, include the self-signed certificate
-    if (options.hostname === defaultBroker) {
-      options.ca = getDefaultCa();
-    }
   
     const req = https.request(options, (res) => {
       let backside = '';
@@ -174,38 +167,6 @@ function normalize(vOrig) {
   vString = 'H[' + vString + v + 'e' + exp + ']';
   return vString;
 }
-
-
-function getDefaultCa() {
-  if (defaultCa === undefined) {
-    defaultCa = "-----BEGIN CERTIFICATE-----\n" +
-    "MIID4zCCA0ygAwIBAgIJAMelf8skwVWPMA0GCSqGSIb3DQEBBQUAMIGoMQswCQYD\n" +
-    "VQQGEwJVUzERMA8GA1UECBMITWFyeWxhbmQxETAPBgNVBAcTCENvbHVtYmlhMRcw\n" +
-    "FQYDVQQKEw5DaXJjb251cywgSW5jLjERMA8GA1UECxMIQ2lyY29udXMxJzAlBgNV\n" +
-    "BAMTHkNpcmNvbnVzIENlcnRpZmljYXRlIEF1dGhvcml0eTEeMBwGCSqGSIb3DQEJ\n" +
-    "ARYPY2FAY2lyY29udXMubmV0MB4XDTA5MTIyMzE5MTcwNloXDTE5MTIyMTE5MTcw\n" +
-    "NlowgagxCzAJBgNVBAYTAlVTMREwDwYDVQQIEwhNYXJ5bGFuZDERMA8GA1UEBxMI\n" +
-    "Q29sdW1iaWExFzAVBgNVBAoTDkNpcmNvbnVzLCBJbmMuMREwDwYDVQQLEwhDaXJj\n" +
-    "b251czEnMCUGA1UEAxMeQ2lyY29udXMgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MR4w\n" +
-    "HAYJKoZIhvcNAQkBFg9jYUBjaXJjb251cy5uZXQwgZ8wDQYJKoZIhvcNAQEBBQAD\n" +
-    "gY0AMIGJAoGBAKz2X0/0vJJ4ad1roehFyxUXHdkjJA9msEKwT2ojummdUB3kK5z6\n" +
-    "PDzDL9/c65eFYWqrQWVWZSLQK1D+v9xJThCe93v6QkSJa7GZkCq9dxClXVtBmZH3\n" +
-    "hNIZZKVC6JMA9dpRjBmlFgNuIdN7q5aJsv8VZHH+QrAyr9aQmhDJAmk1AgMBAAGj\n" +
-    "ggERMIIBDTAdBgNVHQ4EFgQUyNTsgZHSkhhDJ5i+6IFlPzKYxsUwgd0GA1UdIwSB\n" +
-    "1TCB0oAUyNTsgZHSkhhDJ5i+6IFlPzKYxsWhga6kgaswgagxCzAJBgNVBAYTAlVT\n" +
-    "MREwDwYDVQQIEwhNYXJ5bGFuZDERMA8GA1UEBxMIQ29sdW1iaWExFzAVBgNVBAoT\n" +
-    "DkNpcmNvbnVzLCBJbmMuMREwDwYDVQQLEwhDaXJjb251czEnMCUGA1UEAxMeQ2ly\n" +
-    "Y29udXMgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MR4wHAYJKoZIhvcNAQkBFg9jYUBj\n" +
-    "aXJjb251cy5uZXSCCQDHpX/LJMFVjzAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEB\n" +
-    "BQUAA4GBAAHBtl15BwbSyq0dMEBpEdQYhHianU/rvOMe57digBmox7ZkPEbB/baE\n" +
-    "sYJysziA2raOtRxVRtcxuZSMij2RiJDsLxzIp1H60Xhr8lmf7qF6Y+sZl7V36KZb\n" +
-    "n2ezaOoRtsQl9dhqEMe8zgL76p9YZ5E69Al0mgiifTteyNjjMuIW\n" +
-    "-----END CERTIFICATE-----\n"
-  }
-
-  return defaultCa;
-}
-
 
 function target(uuid, secret, options) {
   let key = uuid + '/' + secret;
